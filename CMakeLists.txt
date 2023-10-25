@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.15)
 
 project(OcrTest VERSION 0.1.0 LANGUAGES CXX)
 
@@ -8,11 +8,19 @@ set(CMAKE_CXX_STANDARD 20)
 # find_package(Leptonica REQUIRED)
 # find_package(Tesseract REQUIRED)
 
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
-FetchContent_MakeAvailable(SFML)
+find_package(PkgConfig REQUIRED)
+find_package(SFML COMPONENTS graphics window system)
+
+if (NOT SFML_FOUND)
+    message(WARNING "SFML not found, using FetchContent")
+    include(FetchContent)
+    set(FETCHCONTENT_QUIET OFF)
+    FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x
+        GIT_PROGRESS TRUE)
+    FetchContent_MakeAvailable(SFML)
+endif()
 
 set(EXECUTABLE_NAME OcrTest)
 
