@@ -33,7 +33,7 @@ std::vector<std::string> Ocr::getTextFromImage(const sf::Texture &target)
 
     auto image = getPix(target);
     api.SetImage(image);
-    api.SetPageSegMode(tesseract::PageSegMode::PSM_SINGLE_LINE);
+    api.SetPageSegMode(tesseract::PageSegMode::PSM_SINGLE_BLOCK);
 
     if (api.Recognize(nullptr)) {
         std::cout << "Error while recognizing text" << std::endl;

@@ -8,12 +8,17 @@ function info {
     echo -e "\e[1;32m[INFO]\e[0m $1"
 }
 
+function warning {
+    echo -e "\e[1;33m[WARNING]\e[0m $1"
+}
+
 function error {
     echo -e "\e[1;31m[ERROR]\e[0m $1"
 }
 
-function warning {
-    echo -e "\e[1;33m[WARNING]\e[0m $1"
+function fatal {
+    echo -e "\e[1;31m[FATAL]\e[0m ** $1 **"
+    exit 1
 }
 
 function installLanguage {
@@ -23,13 +28,13 @@ function installLanguage {
     fi
 }
 
-info "** Installing dependencies"
+info "Installing dependencies"
 sudo apt install xorg-dev libudev-dev cmake clang libtesseract-dev vim git libopenal-dev libvorbis-dev libflac-dev libsfml-dev -y
 
 installLanguage eng
 installLanguage fra
 
-info "** Installing test app"
+info "Installing test app"
 if [ -d "ocr-test" ]; then
     warning "Removing old test app"
     rm -rf ocr-test
@@ -39,11 +44,11 @@ cd ocr-test
 mkdir -p build
 cd build
 
-info "** Building test app"
+info "Building test app"
 cmake ..
 make
 
-info "** Running test app"
+info "Running test app"
 DISPLAY=:0 ./OcrTest
 
-info "** Done"
+info "Done"
