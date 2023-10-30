@@ -3,6 +3,20 @@
 set -e
 
 TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+PACKAGES="          xorg-dev"
+PACKAGES="$PACKAGES libudev-dev"
+PACKAGES="$PACKAGES cmake"
+PACKAGES="$PACKAGES clang"
+PACKAGES="$PACKAGES vim"
+PACKAGES="$PACKAGES git"
+PACKAGES="$PACKAGES libopenal-dev"
+PACKAGES="$PACKAGES libvorbis-dev"
+PACKAGES="$PACKAGES libflac-dev"
+PACKAGES="$PACKAGES libsfml-dev"
+PACKAGES="$PACKAGES libtesseract-dev"
+PACKAGES="$PACKAGES tesseract-ocr"
+PACKAGES="$PACKAGES tesseract-ocr-eng"
+PACKAGES="$PACKAGES tesseract-ocr-fra"
 
 function info {
     echo -e "\e[1;32m[INFO]\e[0m $1"
@@ -21,18 +35,8 @@ function fatal {
     exit 1
 }
 
-function installLanguage {
-    if [ ! -f "/usr/share/tessdata/$1.traineddata" ]; then
-        info "Installing $1 language"
-        sudo wget https://github.com/tesseract-ocr/tessdata/raw/main/$1.traineddata -qO $TESSDATA_PREFIX/$1.traineddata
-    fi
-}
-
 info "Installing dependencies"
-sudo apt install xorg-dev libudev-dev cmake clang libtesseract-dev vim git libopenal-dev libvorbis-dev libflac-dev libsfml-dev -y
-
-installLanguage eng
-installLanguage fra
+sudo apt install $PACKAGES -y
 
 info "Installing test app"
 if [ -d "ocr-test" ]; then

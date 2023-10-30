@@ -15,7 +15,7 @@ Ocr::Ocr(const std::string &lang)
 
 static Pix *getPix(const sf::Texture &target)
 {
-#if SFML_VERSION_MAJOR <= 2 && SFML_VERSION_MINOR <= 5
+#if (SFML_VERSION_MAJOR <= 2 && SFML_VERSION_MINOR <= 5) or defined(FORCE_SAVE_FILE)
     target.copyToImage().saveToFile("ocr.png");
     return pixRead("ocr.png");
 #else

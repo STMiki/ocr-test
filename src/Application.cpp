@@ -32,7 +32,7 @@ void Application::addButton(Button &&button) { mButtons.push_back(std::move(butt
 void Application::move(sf::Vector2i pos)
 {
     auto circle = sf::CircleShape(10);
-    circle.setFillColor(sf::Color::White);
+    circle.setFillColor(sf::Color::Black);
     circle.setPosition(pos.x, mWindow.getSize().y - pos.y);
     mTexture.draw(std::move(circle));
 }
@@ -61,7 +61,7 @@ void Application::handleClearButton()
 {
     mTexture.clear();
     auto background = sf::RectangleShape(sf::Vector2f(mTexture.getSize().x, mTexture.getSize().y));
-    background.setFillColor(sf::Color::Black);
+    background.setFillColor(sf::Color::White);
     mTexture.draw(background);
 }
 
@@ -87,6 +87,8 @@ void Application::handleEvent()
             mPressed = true;
             move({event.mouseButton.x, event.mouseButton.y});
         } else if (event.type == sf::Event::MouseButtonReleased || event.type == sf::Event::TouchEnded) {
+            if (!mPressed)
+                continue;
             mPressed = false;
             move({event.mouseButton.x, event.mouseButton.y});
         } else if (event.type == sf::Event::MouseMoved || event.type == sf::Event::TouchMoved) {
