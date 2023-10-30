@@ -19,7 +19,7 @@ function warning {
 function installLanguage {
     if [ ! -f "/usr/share/tessdata/$1.traineddata" ]; then
         info "Installing $1 language"
-        sudo wget https://github.com/tesseract-ocr/tessdata/raw/main/$1.traineddata -o $TESSDATA_PREFIX/$1.traineddata
+        sudo wget https://github.com/tesseract-ocr/tessdata/raw/main/$1.traineddata -qO $TESSDATA_PREFIX/$1.traineddata
     fi
 }
 
