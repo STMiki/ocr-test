@@ -37,8 +37,7 @@ info "Installing test app"
 sudo cp build/OcrTest /usr/local/bin/ocr-test
 sudo wget https://en.wikipedia.org/wiki/File:Schlegel_wireframe_8-cell.png -qO /usr/local/share/ocr-test.png
 sudo chmod +x /usr/local/bin/ocr-test
-sudo touch $DESKTOP_FILE_PATH
-sudo chmod 644 $DESKTOP_FILE_PATH
 sudo echo "$DESKTOP_FILE_CONTENT" > $DESKTOP_FILE_PATH
+sudo chmod 644 $DESKTOP_FILE_PATH
 
 info "Done"
