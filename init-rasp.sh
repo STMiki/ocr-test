@@ -2,6 +2,8 @@
 
 set -e
 
+TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+
 function info {
     echo -e "\e[1;32m[INFO]\e[0m $1"
 }
@@ -17,7 +19,7 @@ function warning {
 function installLanguage {
     if [ ! -f "/usr/share/tessdata/$1.traineddata" ]; then
         info "Installing $1 language"
-        sudo wget https://github.com/tesseract-ocr/tessdata/raw/main/$1.traineddata -o /usr/share/tessdata/$1.traineddata
+        sudo wget https://github.com/tesseract-ocr/tessdata/raw/main/$1.traineddata -o $TESSDATA_PREFIX/$1.traineddata
     fi
 }
 
