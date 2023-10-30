@@ -39,20 +39,8 @@ info "Installing dependencies"
 sudo apt install $PACKAGES -y
 
 info "Installing test app"
-if [ -d "ocr-test" ]; then
-    warning "Removing old test app"
-    rm -rf ocr-test
+if [ ! -d "ocr-test" ]; then
+    git clone https://github.com/STMiki/ocr-test.git
 fi
-git clone https://github.com/STMiki/ocr-test.git
-cd ocr-test
-mkdir -p build
-cd build
-
-info "Building test app"
-cmake ..
-make
-
-info "Running test app"
-DISPLAY=:0 ./OcrTest
 
 info "Done"

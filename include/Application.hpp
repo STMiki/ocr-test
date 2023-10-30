@@ -4,6 +4,7 @@
 #include "Ocr.hpp"
 #include "config.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Window.hpp>
 
 #ifndef SFML_SYSTEM_MACOS
@@ -36,5 +37,6 @@ private:
     // sf::RectangleShape saveButton;
 
     bool mPressed;
+    sf::Vector2i mLastPos;
     Ocr mOcr;
 };

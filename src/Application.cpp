@@ -1,5 +1,8 @@
 #include "Application.hpp"
+#include "Line.hpp"
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Vertex.hpp>
 #include <iostream>
 
 Application::Application():
@@ -23,6 +26,7 @@ Application::Application():
 
     mTexture.create(mWindow.getSize().x, mWindow.getSize().y, sf::ContextSettings());
     mSprite.setTexture(mTexture.getTexture());
+    mTexture.setSmooth(true);
 
     handleClearButton();
 }
@@ -31,10 +35,13 @@ void Application::addButton(Button &&button) { mButtons.push_back(std::move(butt
 
 void Application::move(sf::Vector2i pos)
 {
-    auto circle = sf::CircleShape(10);
-    circle.setFillColor(sf::Color::Black);
-    circle.setPosition(pos.x, mWindow.getSize().y - pos.y);
-    mTexture.draw(std::move(circle));
+    Line line(
+        {static_cast<float>(mLastPos.x), static_cast<float>(mTexture.getSize().y - mLastPos.y)}, {static_cast<float>(pos.x), static_cast<float>(mTexture.getSize().y - pos.y)},
+        20.f, sf::Color::Black
+    );
+
+    mTexture.draw(line);
+    mLastPos = pos;
 }
 
 bool Application::checkCollisions(UNUSED sf::Vector2i pos)
@@ -76,7 +83,7 @@ void Application::handleEvent()
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            mTexture.clear();
+            handleClearButton();
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
             handleOcrButton();
         }
@@ -85,15 +92,16 @@ void Application::handleEvent()
             if (checkCollisions({event.mouseButton.x, event.mouseButton.y})) [[unlikely]]
                 continue;
             mPressed = true;
-            move({event.mouseButton.x, event.mouseButton.y});
+            mLastPos = {event.mouseButton.x, event.mouseButton.y};
         } else if (event.type == sf::Event::MouseButtonReleased || event.type == sf::Event::TouchEnded) {
             if (!mPressed)
                 continue;
             mPressed = false;
             move({event.mouseButton.x, event.mouseButton.y});
         } else if (event.type == sf::Event::MouseMoved || event.type == sf::Event::TouchMoved) {
-            if (mPressed)
-                move({event.mouseMove.x, event.mouseMove.y});
+            if (!mPressed)
+                continue;
+            move({event.mouseMove.x, event.mouseMove.y});
         }
     }
 }
