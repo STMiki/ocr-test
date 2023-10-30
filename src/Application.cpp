@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <iostream>
 
 Application::Application():
@@ -22,6 +23,8 @@ Application::Application():
 
     mTexture.create(mWindow.getSize().x, mWindow.getSize().y, sf::ContextSettings());
     mSprite.setTexture(mTexture.getTexture());
+
+    handleClearButton();
 }
 
 void Application::addButton(Button &&button) { mButtons.push_back(std::move(button)); }
@@ -54,7 +57,13 @@ void Application::handleOcrButton()
         std::cout << text << std::endl;
 }
 
-void Application::handleClearButton() { mTexture.clear(); }
+void Application::handleClearButton()
+{
+    mTexture.clear();
+    auto background = sf::RectangleShape(sf::Vector2f(mTexture.getSize().x, mTexture.getSize().y));
+    background.setFillColor(sf::Color::Black);
+    mTexture.draw(background);
+}
 
 void Application::handleExitButton() { mWindow.close(); }
 

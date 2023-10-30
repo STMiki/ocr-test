@@ -33,7 +33,7 @@ std::vector<std::string> Ocr::getTextFromImage(const sf::Texture &target)
 
     auto image = getPix(target);
     api.SetImage(image);
-    api.SetPageSegMode(tesseract::PageSegMode::PSM_SINGLE_BLOCK);
+    api.SetPageSegMode(tesseract::PageSegMode::PSM_SINGLE_WORD);
 
     if (api.Recognize(nullptr)) {
         std::cout << "Error while recognizing text" << std::endl;
@@ -45,9 +45,9 @@ std::vector<std::string> Ocr::getTextFromImage(const sf::Texture &target)
         std::cout << "getting something !" << std::endl;
         do {
             const char *word = ri->GetUTF8Text(level);
-            // float conf = ri->Confidence(level);
+            float conf = ri->Confidence(level);
             if (word != nullptr) {
-                std::cout << "word: " << word << std::endl;
+                std::cout << "word: '" << word << "' with " << conf << std::endl;
                 result.emplace_back(word);
                 delete[] word;
             } else
