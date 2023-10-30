@@ -19,6 +19,13 @@ function fatal {
     exit 1
 }
 
+IMAGE_NAME="ocr-test.png"
+IMAGE_PATH="/usr/local/share/$IMAGE_NAME"
+IMAGE_URL="https://en.wikipedia.org/wiki/File:Schlegel_wireframe_8-cell.png"
+
+EXECUTABLE="ocr-test"
+EXECUTABLE_PATH="/usr/local/bin/$EXECUTABLE"
+
 DESKTOP_FILE="ocr-test.desktop"
 DESKTOP_FILE_PATH="/usr/share/applications/$DESKTOP_FILE"
 DESKTOP_FILE_CONTENT="[Desktop Entry]
@@ -27,17 +34,18 @@ Encoding=UTF-8
 Name=OcrTest
 Comment=Ocr test app
 Icon=/usr/local/share/ocr-test.png
-Exec=/usr/local/bin/ocr-test
+Exec=$EXECUTABLE_PATH
 Terminal=false
-Categories=X-Debian-Applications-JMRI;
 "
 
 info "Installing test app"
 
-sudo cp build/OcrTest /usr/local/bin/ocr-test
-sudo wget https://en.wikipedia.org/wiki/File:Schlegel_wireframe_8-cell.png -qO /usr/local/share/ocr-test.png
-sudo chmod +x /usr/local/bin/ocr-test
-sudo echo "$DESKTOP_FILE_CONTENT" > $DESKTOP_FILE_PATH
+echo "$DESKTOP_FILE_CONTENT"
+
+sudo cp build/OcrTest $EXECUTABLE_PATH
+sudo wget $IMAGE_URL -qO $IMAGE_PATH
+sudo chmod +x $EXECUTABLE_PATH
+echo "$DESKTOP_FILE_CONTENT" | sudo tee $DESKTOP_FILE_PATH > /dev/null
 sudo chmod 644 $DESKTOP_FILE_PATH
 
 info "Done"

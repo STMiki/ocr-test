@@ -19,8 +19,6 @@ function fatal {
     exit 1
 }
 
-set -e
-
 info "Building test app"
 
 mkdir -p build
