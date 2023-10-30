@@ -13,14 +13,25 @@ Ocr::Ocr(const std::string &lang)
     api.SetPageSegMode(tesseract::PSM_AUTO);
 }
 
+static Pix *getPix(const sf::Texture &target)
+{
+#if SFML_VERSION_MAJOR <= 2 && SFML_VERSION_MINOR <= 5
+    target.copyToImage().saveToFile("ocr.png");
+    return pixRead("ocr.png");
+#else
+    std::vector<uint8_t> pixels;
+
+    target.copyToImage().saveToMemory(pixels, "png");
+    return pixReadMemPng(pixels.data(), pixels.size());
+#endif
+}
+
 std::vector<std::string> Ocr::getTextFromImage(const sf::Texture &target)
 {
     std::cout << "Getting text from image" << std::endl;
     std::vector<std::string> result;
-    std::vector<uint8_t> pixels;
 
-    target.copyToImage().saveToMemory(pixels, "png");
-    auto image = pixReadMemPng(pixels.data(), pixels.size());
+    auto image = getPix(target);
     api.SetImage(image);
     api.SetPageSegMode(tesseract::PageSegMode::PSM_SINGLE_LINE);
 
