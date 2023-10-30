@@ -10,6 +10,7 @@ set(FETCHCONTENT_QUIET OFF)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(Tesseract REQUIRED IMPORTED_TARGET tesseract)
+pkg_check_modules(Leptonica REQUIRED IMPORTED_TARGET lept)
 
 # find_package(OpenCV REQUIRED)
 # find_package(Leptonica REQUIRED)
@@ -34,19 +35,14 @@ add_executable(${EXECUTABLE_NAME})
 add_subdirectory(src)
 
 target_link_libraries(OcrTest PRIVATE
-        # ${OpenCV_LIBS}
-        # ${Leptonica_LIBS}
-        # ${Tesseract_LIBS}
         sfml-graphics
         sfml-window
         sfml-system
         PkgConfig::Tesseract
+        PkgConfig::Leptonica
         )
 
 target_include_directories(OcrTest PRIVATE
-        # ${OpenCV_INCLUDE_DIRS}
-        # ${Leptonica_INCLUDE_DIRS}
-        # ${Tesseract_INCLUDE_DIRS}
         include
         )
 
